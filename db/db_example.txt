@@ -1,0 +1,177 @@
+
+-- #################################### Create tables ###############################################
+
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name character varying(50) NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE inventory_operations (
+    operation_id SERIAL PRIMARY KEY,
+    user_id integer,
+    product_id integer,
+    action_type character varying(50) NOT NULL,
+    action_details text,
+    "timestamp" timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE permissions (
+    permission_id SERIAL PRIMARY KEY,
+    permission_name character varying(255) NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    name character varying(100) NOT NULL,
+    description text,
+    category_id integer REFERENCES categories(category_id),
+    quantity integer NOT NULL,
+    price numeric(10,2) NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name character varying(255) NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE role_permissions (
+    role_id integer REFERENCES roles(role_id),
+    permission_id integer REFERENCES permissions(permission_id),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (role_id, permission_id)
+);
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username character varying(50) UNIQUE,
+    password_hash character varying(255) NOT NULL,
+    email character varying(100) UNIQUE,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_roles (
+   user_id integer NOT NULL REFERENCES users(user_id),
+    role_id integer NOT NULL REFERENCES roles(role_id),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, role_id)
+);
+
+-- ####################################### Inserts #################################################
+
+INSERT INTO categories (name, created_at, updated_at) VALUES
+('Electronics', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436'),
+('Clothing', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436'),
+('Home Goods', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436'),
+('Toys & Games', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436'),
+('Beauty & Health', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436'),
+('Books & Music', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436'),
+('Sports & Outdoors', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436'),
+('Pet Supplies', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436'),
+('Food & Beverages', '2023-12-05 03:00:39.996436', '2023-12-05 03:00:39.996436');
+
+
+INSERT INTO permissions (permission_name) VALUES 
+('GET - View all users'), 
+('GET - View user by ID'), 
+('DELETE - Delete user by ID'), 
+('PUT - Update user by ID'), 
+('GET - View all products'), 
+('GET - View product by ID'), 
+('POST - Add product'), 
+('DELETE - Delete product by ID'), 
+('PUT - Update product by ID'), 
+('GET - View all categories'), 
+('GET - View category by ID'), 
+('POST - Add category'), 
+('DELETE - Delete category by ID'), 
+('PUT - Update category by ID'), 
+('GET - View all roles'), 
+('GET - View role by ID'), 
+('GET - View all permissions'), 
+('GET - View permission by ID'), 
+('GET - View all user roles'), 
+('GET - View user role by USER ID'), 
+('GET - View user role by ROLE ID'), 
+('POST - Add user role'), 
+('DELETE - Delete user role by USER ID and ROLE ID'), 
+('GET - View all role permissions'), 
+('POST - Add role permission'), 
+('DELETE - Delete Role Permission ROLE ID - PERMISSION ID'), 
+('GET - View inventory operations page'), 
+('GET - View inventory operations USER ID'), 
+('GET - View inventory operations by PRODUCT ID'), 
+('GET - View inventory operations by ACTION TYPE');
+
+
+
+INSERT INTO products (name, description, category_id, quantity, price, created_at, updated_at)
+VALUES
+('Laptop', 'A high-performance laptop with a 15.6-inch display and a powerful processor.', 1, 10, 1299.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Smartphone', 'A sleek and stylish smartphone with a high-resolution camera and a long-lasting battery.', 1, 20, 699.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+('Shirt', 'A comfortable and stylish shirt made from 100% cotton.', 2, 30, 29.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Jeans', 'A pair of classic blue jeans made from high-quality denim.', 2, 40, 49.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Kitchen Set', 'A complete kitchen set with pots, pans, utensils, and more.', 3, 15, 199.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Bedding Set', 'A luxurious bedding set with a comforter, sheets, and pillowcases.', 3, 20, 149.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Toy Car', 'A toy car that is perfect for imaginative play.', 4, 100, 14.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Doll', 'A beautiful doll with a variety of outfits and accessories.', 4, 50, 29.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Skincare Set', 'A skincare set that includes a cleanser, moisturizer, and serum.', 5, 30, 49.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Makeup Set', 'A makeup set with all the essentials for a flawless look.', 5, 20, 39.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Novel', 'A captivating novel that will keep you on the edge of your seat.', 6, 50, 19.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Music Album', 'A collection of songs from your favorite artist.', 6, 30, 14.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Soccer Ball', 'A high-quality soccer ball for all your games.', 7, 20, 29.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Basketball', 'A durable basketball for indoor and outdoor play.', 7, 15, 19.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Dog Food', 'A nutritious dog food that is formulated for all life stages.', 8, 20, 39.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Cat Food', 'A tasty cat food that is sure to please your feline friend.', 8, 15, 29.99, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Groceries', 'A selection of groceries to keep your pantry stocked.', 9, 50, 100.00, '2023-12-05 03:02:47.205343', '2023-12-05 03:02:47.205343'),
+( 'Laptop', 'A high-performance laptop with a 15.6-inch display and a powerful processor.', 1, 10, 1299.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Smartphone', 'A sleek and stylish smartphone with a high-resolution camera and a long-lasting battery.', 1, 20, 699.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+('Shirt', 'A comfortable and stylish shirt made from 100% cotton.', 2, 30, 29.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Jeans', 'A pair of classic blue jeans made from high-quality denim.', 2, 40, 49.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Kitchen Set', 'A complete kitchen set with pots, pans, utensils, and more.', 3, 15, 199.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Bedding Set', 'A luxurious bedding set with a comforter, sheets, and pillowcases.', 3, 20, 149.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Toy Car', 'A toy car that is perfect for imaginative play.', 4, 100, 14.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Doll', 'A beautiful doll with a variety of outfits and accessories.', 4, 50, 29.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Skincare Set', 'A skincare set that includes a cleanser, moisturizer, and serum.', 5, 30, 49.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Makeup Set', 'A makeup set with all the essentials for a flawless look.', 5, 20, 39.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Novel', 'A captivating novel that will keep you on the edge of your seat.', 6, 50, 19.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+('Music Album', 'A collection of songs from your favorite artist.', 6, 30, 14.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+('Soccer Ball', 'A high-quality soccer ball for all your games.', 7, 20, 29.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Basketball', 'A durable basketball for indoor and outdoor play.', 7, 15, 19.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Dog Food', 'A nutritious dog food that is formulated for all life stages.', 8, 20, 39.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Cat Food', 'A tasty cat food that is sure to please your feline friend.', 8, 15, 29.99, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646'),
+( 'Groceries', 'A selection of groceries to keep your pantry stocked.', 9, 50, 100.00, '2023-12-05 03:02:49.586646', '2023-12-05 03:02:49.586646');
+
+
+-- The passwords are both: 12345678
+INSERT INTO users (username, password_hash, email, created_at, updated_at)
+VALUES
+('admin', 'scrypt:32768:8:1$cUz8YchhLoiA04ZF$a53467f7c1a121ea7db2466c29e4c59e09ac6f871937e2bdbd28df602749ceb7b5310ad2a457995afde0047710e736429510e6409cff4cbd2f690c6317a1468b', 'DIEGOJOSUEANDRADE@GMAIL.COM', '2023-12-05 02:42:53.375229', '2023-12-05 02:42:53.375229'),
+('user', 'scrypt:32768:8:1$UUciqERBnJTO5YmR$e9dc4cb5d3a28c29cec6eb28550a263c44cefa1b3b63cd481de23e36898b157cbb338c017946e16a49422c95b049818737f3ce6e1f9c298db4569cd088cbb55a', 'diego.andrade@yachaytech.edu.ec', '2023-12-05 21:48:34.121008', '2023-12-05 21:48:34.121008');
+
+
+INSERT INTO roles (role_name, created_at, updated_at)
+VALUES
+('user', '2023-12-05 21:47:04.346583', '2023-12-05 21:47:04.346583'),
+('admin', '2023-12-05 21:47:04.346583', '2023-12-05 21:47:04.346583');
+
+
+INSERT INTO user_roles (user_id, role_id, created_at, updated_at)
+VALUES
+(2, 1, '2023-12-05 21:48:34.221196', '2023-12-05 21:48:34.221196'),
+(1, 2, NULL, NULL);
+
+
+insert into role_permissions (role_id,permission_id) Values (2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(2,10),(2,11),(2,12),(2,13),(2,14),(2,15),(2,16),(2,17),(2,18),(2,19),(2,20),(2,21),(2,22),(2,23),(2,24),(2,25),(2,26),(2,27),(2,28),(2,29),(2,30);
+
+insert into role_permissions (role_id,permission_id) Values (1,5),(1,6),(1,10),(1,11);

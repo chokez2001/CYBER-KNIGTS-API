@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <blockquote>
+        <h1 style="text-align: center;">&nbsp;</h1>
+        <h1 style="text-align: center;">&nbsp;</h1>
+        <h1 style="text-align: center;">Register</h1>
+        </blockquote>
+        <form action="{{ url_for('register') }}" method="post">
+        <p style="text-align: center;"><label for="username">Username:</label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<input id="username" name="username" required="" type="text" /></p>
+        <p style="text-align: center;"><label for="email">Email:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</label><input id="email" name="email" required="" type="email" /></p>
+        <p style="text-align: center;"><label for="password">Password:</label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input id="password" name="password" required="" type="password" /></p>
+        <p style="text-align: center;"><label for="confirm_password">Confirm Password:</label>&nbsp;<input id="confirm_password" name="confirm_password" required="" type="password" /></p>
+        <p style="text-align: center;"><br /> <button type="submit">Register</button></p>
+        </form>
+        <p style="text-align: center;">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+</body>
+</html>

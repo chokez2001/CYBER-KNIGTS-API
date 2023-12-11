@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1 style="text-align: center;">&nbsp;</h1>
+    <h1 style="text-align: center;">&nbsp;</h1>
+    <h1 style="text-align: center;">Login</h1>
+    <form style="text-align: center;" action="{{ url_for('login') }}" method="post">
+    <p style="text-align: center;"><label for="username">Username:</label> <input id="username" name="username" required="" type="text" /></p>
+    <p style="text-align: center;"><label for="password">Password:&nbsp;</label> <input id="password" name="password" required="" type="password" /></p>
+    <p><button type="submit">Login</button></p>
+    </form>
+    <p style="text-align: center;">Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+    <p style="text-align: center;">&nbsp;</p>
+    <h1 style="padding-left: 400px; padding-right:250px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<img style="float: left;" src="https://media.tenor.com/bkJxYJ_AvxcAAAAC/jesus-dancing.gif" alt="Jesus Dancing GIF - Jesus Dancing Simpsons GIFs" width="159" height="294" /><img style="float: right;" src="https://media.tenor.com/AdyEJOsu4AcAAAAC/marge-simpson.gif" alt="Marge Simpson GIF - Marge Simpson Dancing GIFs" width="295" height="293" /></h1>
+</body>
+</html>
